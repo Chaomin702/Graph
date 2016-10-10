@@ -1,8 +1,3 @@
-﻿  graph.cpp
-  Generating Code...
-  Compiling...
-  test.cpp
-  Generating Code...
-cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
+﻿  test.cpp
   DiffusionMinimum.vcxproj -> D:\InformationDiffusion\DiffusionMinimum\Debug\DiffusionMinimum.exe
   DiffusionMinimum.vcxproj -> D:\InformationDiffusion\DiffusionMinimum\Debug\DiffusionMinimum.pdb (Full PDB)

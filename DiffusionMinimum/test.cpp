@@ -58,13 +58,26 @@ static void test_graph_dijkstra() {
 	EXPECT_EQ_DOUBLE(8.0, g.nodePriority(1));
 }
 static void test_graph_johnson() {
-	Graph g = importEdgesFormFile("eg.txt");
-	Graph::matrix m1 = g.johnson();
-	Graph::matrix m2 = { {0,8,5,9,7},{11,0,2,1,4},{9,3,0,4,2},{11,19,16,0,4},{7,15,12,6,0} };
-	EXPECT_EQ_INT(m1.size(), m2.size());
-	for (Graph::matrix::size_type i = 0; i < m2.size(); ++i) {
-		for (decltype(i) j = 0; j < m2[i].size(); ++j) {
-			EXPECT_EQ_DOUBLE(m1[i][j], m2[i][j]);
+	{
+		Graph g = importEdgesFormFile("eg.txt");
+		Graph::matrix m1 = g.johnson();
+		Graph::matrix m2 = { {0,8,5,9,7},{11,0,2,1,4},{9,3,0,4,2},{11,19,16,0,4},{7,15,12,6,0} };
+		EXPECT_EQ_INT(m1.size(), m2.size());
+		for (Graph::matrix::size_type i = 0; i < m2.size(); ++i) {
+			for (decltype(i) j = 0; j < m2[i].size(); ++j) {
+				EXPECT_EQ_DOUBLE(m1[i][j], m2[i][j]);
+			}
+		}
+	}
+	{
+		Graph g = importEdgesFormFile("eg2.txt");
+		Graph::matrix m1 = g.johnson();
+		Graph::matrix m2 = { { 0,8,5,9,7 },{ 11,0,2,1,4 },{ 9,3,0,4,2 },{ 11,19,16,0,4 },{ 7,15,12,6,0 } };
+		EXPECT_EQ_INT(m1.size(), m2.size());
+		for (Graph::matrix::size_type i = 0; i < m2.size(); ++i) {
+			for (decltype(i) j = 0; j < m2[i].size(); ++j) {
+				EXPECT_EQ_DOUBLE(m1[i][j], m2[i][j]);
+			}
 		}
 	}
 }

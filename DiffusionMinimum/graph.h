@@ -34,7 +34,9 @@ struct Edge {
 class Graph {
 public:
 	using matrix = std::vector<std::vector<double>>;
+	//节点数量
 	int nodesNum()const { return nodes.size(); }
+	//插入节点
 	void insert(int id) {
 		insert(Node(id));
 	}
@@ -48,6 +50,7 @@ public:
 	}
 	//获取节点权重
 	double nodePriority(int id)const{return getNodeRef(id).priority; }
+	//借点前驱
 	int nodeParent(int id)const {
 		return getNodeRef(id).parent;
 	}
@@ -78,13 +81,6 @@ private:
 	void insert(const Node&);
 	void insert(const Edge&);
 	//松弛方法，用于dijkstra
-	bool relax(int u, int v, double w) {
-		if (getNodeRef(v).priority > getNodeRef(u).priority + w) {
-			getNodeRef(v).priority = getNodeRef(u).priority + w;
-			getNodeRef(v).parent = u;
-			return true;
-		}
-		return false;
-	}
+	bool relax(int u, int v, double w);
 
 };

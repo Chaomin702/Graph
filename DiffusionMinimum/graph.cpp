@@ -22,6 +22,15 @@ void Graph::insert(const Edge &e){
 	++getNodeRef(e.dest).indegree;
 }
 
+bool Graph::relax(int u, int v, double w){
+	if (getNodeRef(v).priority > getNodeRef(u).priority + w) {
+		getNodeRef(v).priority = getNodeRef(u).priority + w;
+		getNodeRef(v).parent = u;
+		return true;
+	}
+	return false;
+}
+
 void Graph::reset(){
 	for (auto &i : nodes) {
 		i.parent = NIL;
@@ -37,8 +46,8 @@ void Graph::dijkstra(int s){
 
 	fib::FibonacciHeap<Node> Q;
 	std::vector<fibNode*> ptrs;	//保存fib堆中的节点指针，方便decreaseKey传参
-	for (auto &i : nodes) {
-		ptrs.push_back(Q.insert(i));	
+	for (auto &i : idTable) {
+		ptrs.push_back(Q.insert(getNodeRef(i.first)));	
 	}
 
 	while (!Q.isEmpty()) {
@@ -47,7 +56,7 @@ void Graph::dijkstra(int s){
 		int u = n.id;
 		for (auto &i : neighbors[id2index(u)]) {
 			if ((UNDISCOVERED == getNodeRef(u).type) && relax(n.id, i.dest, i.weight)) {
-				Q.decreaseKey(ptrs[id2index(i.dest)], getNodeRef(i.dest));
+				Q.decreaseKey(ptrs[i.dest], getNodeRef(i.dest));
 			}
 		}
 		getNodeRef(u).type = VISITED;
