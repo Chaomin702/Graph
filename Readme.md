@@ -6,12 +6,27 @@
 
 ### 用例
 
-  ![gra](gra.jpg)
+ ![gra](gra.jpg)
 
+```
+eg.txt {source dest weight}
+
+0 1 10
+0 2 5
+1 2 2
+1 3 1
+2 1 3
+2 3 9
+2 4 2
+3 4 4
+4 0 7
+4 3 6
+```
 ```c++
 #include <iostream>
 #include <list>
 #include "graph.h"
+#include "util.h"
 
 int main(void){
 	Graph g = importEdgesFormFile("eg.txt");
@@ -25,9 +40,8 @@ int main(void){
 }
 ```
 
-output
-
 ```
+output
 0 2 1
 path weight: 8
 ```
