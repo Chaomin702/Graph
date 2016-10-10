@@ -40,6 +40,8 @@ public:
 	void insert(int id) {
 		insert(Node(id));
 	}
+	//s->t的边权重，不存在则返回DBL_MAX
+	double weight(int s, int t);
 	//插入边(source,dest,weight)
 	void insert(int s, int t, double w) {
 		insert(Edge(s, t, w));

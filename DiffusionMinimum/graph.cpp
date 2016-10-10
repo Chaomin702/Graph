@@ -2,8 +2,10 @@
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #endif
+#include <algorithm>
 #include "graph.h"
-#include "graph.h"
+
+
 void Graph::insert(const Node &n){
 	if (isNodeExist(n.id))
 		return;
@@ -29,6 +31,15 @@ bool Graph::relax(int u, int v, double w){
 		return true;
 	}
 	return false;
+}
+
+double Graph::weight(int s, int t){
+	assert(isNodeExist(s));
+	for (auto &i : neighbors[id2index(s)]) {
+		if (i.dest == t)
+			return i.weight;
+	}
+	return DBL_MAX;
 }
 
 void Graph::reset(){

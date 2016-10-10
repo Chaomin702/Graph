@@ -43,6 +43,18 @@ static void test_graph_degree() {
 	EXPECT_EQ_INT(1, g.getNode(3).outdegree);
 	EXPECT_EQ_INT(2, g.getNode(4).outdegree);
 }
+static void test_graph_weight() {
+	Graph g = importEdgesFormFile("eg.txt");
+	EXPECT_EQ_DOUBLE(10.0, g.weight(0, 1));
+	EXPECT_EQ_DOUBLE(5.0, g.weight(0, 2));
+	EXPECT_EQ_DOUBLE(2.0, g.weight(1, 2));
+	EXPECT_EQ_DOUBLE(1.0, g.weight(1, 3));
+	EXPECT_EQ_DOUBLE(3.0, g.weight(2, 1));
+	EXPECT_EQ_DOUBLE(2.0, g.weight(2, 4));
+	EXPECT_EQ_DOUBLE(4.0, g.weight(3, 4));
+	EXPECT_EQ_DOUBLE(7.0, g.weight(4, 0));
+	EXPECT_EQ_DOUBLE(6.0, g.weight(4, 3));
+}
 static void test_graph_dijkstra() {
 	Graph g = importEdgesFormFile("eg.txt");
 	g.dijkstra(0);
@@ -83,6 +95,7 @@ static void test_graph_johnson() {
 }
 static void test_graph() {
 	test_graph_degree();
+	test_graph_weight();
 	test_graph_dijkstra();
 	test_graph_johnson();
 }
