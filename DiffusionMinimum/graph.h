@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <float.h>
 #include <list>
+#include <map>
 #include "fibonacci.hpp"
 enum {
 	NIL = -1
@@ -32,6 +33,7 @@ struct Edge {
 
 class Graph {
 public:
+	using matrix = std::vector<std::vector<double>>;
 	int nodesNum()const { return nodes.size(); }
 	void insert(int id) {
 		insert(Node(id));
@@ -54,8 +56,11 @@ public:
 	void dijkstra(int s);
 	//获取s->t最短路径链表
 	std::list<int> shortestpath(int s, int t);
+	//计算所有节点对的最短路径权重
+	matrix johnson();
+
 private:
-	std::unordered_map<int, int> idTable;	//节点id=>内部向量索引 哈希表
+	std::map<int, int> idTable;	//节点id=>内部向量索引映射
 	std::vector<Node> nodes;	//节点集
 	std::vector<std::vector<Edge>> neighbors;	//节点邻居集
 

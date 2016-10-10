@@ -1,3 +1,8 @@
+#define _WINDOWS
+#ifdef _WINDOWS
+	#define _CRTDBG_MAP_ALLOC
+	#include <crtdbg.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,12 +57,28 @@ static void test_graph_dijkstra() {
 	}
 	EXPECT_EQ_DOUBLE(8.0, g.nodePriority(1));
 }
+static void test_graph_johnson() {
+	Graph g = importEdgesFormFile("eg.txt");
+	Graph::matrix m1 = g.johnson();
+	Graph::matrix m2 = { {0,8,5,9,7},{11,0,2,1,4},{9,3,0,4,2},{11,19,16,0,4},{7,15,12,6,0} };
+	EXPECT_EQ_INT(m1.size(), m2.size());
+	for (Graph::matrix::size_type i = 0; i < m2.size(); ++i) {
+		for (decltype(i) j = 0; j < m2[i].size(); ++j) {
+			EXPECT_EQ_DOUBLE(m1[i][j], m2[i][j]);
+		}
+	}
+}
 static void test_graph() {
 	test_graph_degree();
 	test_graph_dijkstra();
+	test_graph_johnson();
 }
 
 int main(void) {
+#ifdef _WINDOWS
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
 	test_graph();
-	return 0;
+	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
+	return main_ret;
 }

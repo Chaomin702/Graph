@@ -1,3 +1,7 @@
+#ifdef _WINDOWS
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#endif
 #include "graph.h"
 #include "graph.h"
 void Graph::insert(const Node &n){
@@ -60,6 +64,18 @@ std::list<int> Graph::shortestpath(int s, int t){
 	return L;
 }
 
+Graph::matrix Graph::johnson(){
+	matrix M;
+	for (auto &i : idTable) {
+		dijkstra(i.first);
+		std::vector<double> temp;
+		for (auto &k : idTable)
+			temp.push_back(getNodeRef(k.first).priority);
+		M.push_back(temp);
+	}
+	return M;
+}
+
 bool Graph::isNodeExist(int id)const{
 	return idTable.end() != idTable.find(id);
 }
@@ -67,5 +83,5 @@ bool operator < (const Node& m, const Node& n) {
 	return m.priority < n.priority;
 }
 bool operator > (const Node& m, const Node& n) {
-	return m.priority > m.priority;
+	return m.priority > n.priority;
 }
