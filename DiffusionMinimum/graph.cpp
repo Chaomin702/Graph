@@ -72,9 +72,9 @@ void Graph::dijkstra(int s){
 	getNodeRef(s).priority = 0;
 
 	fib::FibonacciHeap<Node> Q;
-	std::vector<fibNode*> ptrs;	//保存fib堆中的节点指针，方便decreaseKey传参
+	std::map<int, fibNode*> ptrs;//保存fib堆中的节点指针，方便decreaseKey传参
 	for (auto &i : nodes) {
-		ptrs.push_back(Q.insert(getNodeRef(i.first)));	
+		ptrs[i.first] = Q.insert(getNodeRef(i.first));
 	}
 
 	while (!Q.isEmpty()) {
