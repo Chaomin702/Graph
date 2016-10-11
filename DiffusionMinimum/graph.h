@@ -6,6 +6,7 @@
 #include <float.h>
 #include <list>
 #include <map>
+#include <unordered_set>
 #include "fibonacci.hpp"
 enum {
 	NIL = -1
@@ -30,7 +31,7 @@ struct Edge {
 	double weight;
 	Edge(int s, int d, double w) :source(s), dest(d), weight(w) {}
 };
-
+bool operator == (const Edge& m, const Edge&n);
 class Graph {
 public:
 	using matrix = std::vector<std::vector<double>>;
@@ -48,7 +49,8 @@ public:
 	}
 	//获取节点拷贝
 	Node getNode(int id) const{
-		return nodes[id2index(id)];
+		assert(isNodeExist(id));
+		return nodes.find(id)->second;
 	}
 	//获取节点权重
 	double nodePriority(int id)const{return getNodeRef(id).priority; }
@@ -65,20 +67,18 @@ public:
 	matrix johnson();
 
 private:
-	std::map<int, int> idTable;	//节点id=>内部向量索引映射
-	std::vector<Node> nodes;	//节点集
-	std::vector<std::vector<Edge>> neighbors;	//节点邻居集
-
-	bool isNodeExist(int id)const;
-	int id2index(int id)const {
-		assert(isNodeExist(id));
-		return idTable.find(id)->second;
+	std::map<int, Node> nodes;
+	std::map<int, std::vector<Edge>> neighbors;
+	bool isNodeExist(int id)const {
+		return nodes.end() != nodes.find(id);
 	}
 	const Node& getNodeRef(int id) const{
-		return nodes[id2index(id)];
+		assert(isNodeExist(id));
+		return nodes.find(id)->second;
 	}
 	Node& getNodeRef(int id) {
-		return nodes[id2index(id)];
+		assert(isNodeExist(id));
+		return nodes[id];
 	}
 	void insert(const Node&);
 	void insert(const Edge&);

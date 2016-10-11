@@ -9,9 +9,7 @@
 void Graph::insert(const Node &n){
 	if (isNodeExist(n.id))
 		return;
-	idTable[n.id] = nodes.size();
-	nodes.push_back(n);
-	neighbors.push_back(std::vector<Edge>());
+	nodes[n.id] = n;
 }
 
 void Graph::insert(const Edge &e){
@@ -19,7 +17,7 @@ void Graph::insert(const Edge &e){
 		insert(Node(e.source));
 	if (!isNodeExist(e.dest))
 		insert(Node(e.dest));
-	neighbors[id2index(e.source)].push_back(e);
+	neighbors[e.source].push_back(e);
 	++getNodeRef(e.source).outdegree;
 	++getNodeRef(e.dest).indegree;
 }
@@ -35,7 +33,7 @@ bool Graph::relax(int u, int v, double w){
 
 double Graph::weight(int s, int t){
 	assert(isNodeExist(s));
-	for (auto &i : neighbors[id2index(s)]) {
+	for (auto &i : neighbors[s]) {
 		if (i.dest == t)
 			return i.weight;
 	}
@@ -44,9 +42,9 @@ double Graph::weight(int s, int t){
 
 void Graph::reset(){
 	for (auto &i : nodes) {
-		i.parent = NIL;
-		i.priority = DBL_MAX;
-		i.type = UNDISCOVERED;
+		i.second.parent = NIL;
+		i.second.priority = DBL_MAX;
+		i.second.type = UNDISCOVERED;
 	}
 }
 
@@ -57,7 +55,7 @@ void Graph::dijkstra(int s){
 
 	fib::FibonacciHeap<Node> Q;
 	std::vector<fibNode*> ptrs;	//保存fib堆中的节点指针，方便decreaseKey传参
-	for (auto &i : idTable) {
+	for (auto &i : nodes) {
 		ptrs.push_back(Q.insert(getNodeRef(i.first)));	
 	}
 
@@ -65,7 +63,7 @@ void Graph::dijkstra(int s){
 		Node n = Q.getMinimum();
 		Q.removeMinimum();
 		int u = n.id;
-		for (auto &i : neighbors[id2index(u)]) {
+		for (auto &i : neighbors[u]) {
 			if ((UNDISCOVERED == getNodeRef(u).type) && relax(n.id, i.dest, i.weight)) {
 				Q.decreaseKey(ptrs[i.dest], getNodeRef(i.dest));
 			}
@@ -86,22 +84,24 @@ std::list<int> Graph::shortestpath(int s, int t){
 
 Graph::matrix Graph::johnson(){
 	matrix M;
-	for (auto &i : idTable) {
+	for (auto &i : nodes) {
 		dijkstra(i.first);
 		std::vector<double> temp;
-		for (auto &k : idTable)
+		for (auto &k : nodes)
 			temp.push_back(getNodeRef(k.first).priority);
 		M.push_back(temp);
 	}
 	return M;
 }
 
-bool Graph::isNodeExist(int id)const{
-	return idTable.end() != idTable.find(id);
-}
 bool operator < (const Node& m, const Node& n) {
 	return m.priority < n.priority;
 }
 bool operator > (const Node& m, const Node& n) {
 	return m.priority > n.priority;
+}
+bool operator == (const Edge& m, const Edge&n) {
+	return m.source == n.source &&
+		m.dest == n.dest &&
+		m.weight == n.weight;
 }
