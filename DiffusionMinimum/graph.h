@@ -34,6 +34,9 @@ struct Edge {
 bool operator == (const Edge& m, const Edge&n);
 class Graph {
 public:
+	Graph() = default;
+	//从文件导入图，格式： node_source node_dest edge_weight /r/t ...
+	Graph(const std::string&);
 	using matrix = std::vector<std::vector<double>>;
 	//节点数量
 	int nodesNum()const { return nodes.size(); }
@@ -49,8 +52,22 @@ public:
 	}
 	//获取节点拷贝
 	Node getNode(int id) const{
-		assert(isNodeExist(id));
-		return nodes.find(id)->second;
+		auto it = nodes.find(id);
+		assert(it != nodes.end());
+		return it->second;
+	}
+	//节点近邻
+	const std::vector<Edge>& getNeighbors(int id)const{
+		auto it = neighbors.find(id);
+		assert(it != neighbors.end());
+		return it->second;
+	}
+	//节点列表
+	std::vector<int> getNodeList()const {
+		std::vector<int> L;
+		for (auto &i : nodes)
+			L.push_back(i.first);
+		return L;
 	}
 	//获取节点权重
 	double nodePriority(int id)const{return getNodeRef(id).priority; }

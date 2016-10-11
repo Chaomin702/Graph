@@ -3,6 +3,10 @@
 #include <crtdbg.h>
 #endif
 #include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <string>
 #include "graph.h"
 
 
@@ -31,8 +35,22 @@ bool Graph::relax(int u, int v, double w){
 	return false;
 }
 
+Graph::Graph(const std::string &filename){
+	std::ifstream f(filename);
+	assert(f);
+	std::string line;
+	int source, dest;
+	double weight;
+	while (std::getline(f, line)) {
+		std::stringstream ss(line);
+		ss >> source >> dest >> weight;
+		insert(source, dest, weight);
+	}
+	f.close();
+}
+
 double Graph::weight(int s, int t){
-	assert(isNodeExist(s));
+	assert(isNodeExist(s) && s!=t);
 	for (auto &i : neighbors[s]) {
 		if (i.dest == t)
 			return i.weight;

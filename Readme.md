@@ -26,10 +26,9 @@ eg.txt {source dest weight}
 #include <iostream>
 #include <list>
 #include "graph.h"
-#include "util.h"
 
 int main(void){
-	Graph g = importEdgesFormFile("eg.txt");
+	Graph g("eg.txt");
 	g.dijkstra(0);	//起点为0
  	std::list<int> res = g.shortestpath(0, 1); //0->1的最短路
   	for(auto i:res){

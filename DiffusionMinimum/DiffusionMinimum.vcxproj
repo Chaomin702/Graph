@@ -146,10 +146,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="community.h" />
     <ClInclude Include="fibonacci.hpp" />
     <ClInclude Include="graph.h" />
-    <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graph.cpp" />

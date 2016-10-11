@@ -9,7 +9,6 @@
 #include <iostream>
 #include <list>
 #include "graph.h"
-#include "util.h"
 
 static int main_ret = 0;
 static int test_count = 0;
@@ -30,7 +29,7 @@ static int test_pass = 0;
 #define EXPECT_EQ_DOUBLE(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%.17g")
 //Í¼½Úµã¶È²âÊÔ
 static void test_graph_degree() {
-	Graph g = importEdgesFormFile("eg.txt");
+	Graph g("eg.txt");
 	EXPECT_EQ_INT(1, g.getNode(0).indegree);
 	EXPECT_EQ_INT(2, g.getNode(1).indegree);
 	EXPECT_EQ_INT(2, g.getNode(2).indegree);
@@ -44,7 +43,7 @@ static void test_graph_degree() {
 	EXPECT_EQ_INT(2, g.getNode(4).outdegree);
 }
 static void test_graph_weight() {
-	Graph g = importEdgesFormFile("eg.txt");
+	Graph g("eg.txt");
 	EXPECT_EQ_DOUBLE(10.0, g.weight(0, 1));
 	EXPECT_EQ_DOUBLE(5.0, g.weight(0, 2));
 	EXPECT_EQ_DOUBLE(2.0, g.weight(1, 2));
@@ -56,7 +55,7 @@ static void test_graph_weight() {
 	EXPECT_EQ_DOUBLE(6.0, g.weight(4, 3));
 }
 static void test_graph_dijkstra() {
-	Graph g = importEdgesFormFile("eg.txt");
+	Graph g("eg.txt");
 	g.dijkstra(0);
 	std::list<int> ans = { 0,2,1 };
 	std::list<int> res = g.shortestpath(0, 1);
@@ -71,7 +70,7 @@ static void test_graph_dijkstra() {
 }
 static void test_graph_johnson() {
 	{
-		Graph g = importEdgesFormFile("eg.txt");
+		Graph g("eg.txt");
 		Graph::matrix m1 = g.johnson();
 		Graph::matrix m2 = { {0,8,5,9,7},{11,0,2,1,4},{9,3,0,4,2},{11,19,16,0,4},{7,15,12,6,0} };
 		EXPECT_EQ_INT(m1.size(), m2.size());
@@ -82,7 +81,7 @@ static void test_graph_johnson() {
 		}
 	}
 	{
-		Graph g = importEdgesFormFile("eg2.txt");
+		Graph g("eg2.txt");
 		Graph::matrix m1 = g.johnson();
 		Graph::matrix m2 = { { 0,8,5,9,7 },{ 11,0,2,1,4 },{ 9,3,0,4,2 },{ 11,19,16,0,4 },{ 7,15,12,6,0 } };
 		EXPECT_EQ_INT(m1.size(), m2.size());
