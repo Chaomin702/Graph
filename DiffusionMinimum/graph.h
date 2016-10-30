@@ -22,7 +22,7 @@ struct Node {
 	double priority;		//路径权重
 	nodeType type;
 	Node() = default;
-	Node(int ID) :id(ID), indegree(0), outdegree(0), parent(NIL), priority(DBL_MAX),type(UNDISCOVERED) {}
+	explicit Node(int ID) :id(ID), indegree(0), outdegree(0), parent(NIL), priority(DBL_MAX),type(UNDISCOVERED) {}
 };
 bool operator < (const Node& m, const Node& n);
 bool operator > (const Node& m, const Node& n);
@@ -82,7 +82,8 @@ public:
 	std::list<int> shortestpath(int s, int t);
 	//计算所有节点对的最短路径权重
 	matrix johnson();
-
+	//导出为csv文件
+	void exportGraph(const std::string&);
 private:
 	std::map<int, Node> nodes;
 	std::map<int, std::vector<Edge>> neighbors;

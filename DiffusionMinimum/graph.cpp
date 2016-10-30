@@ -123,3 +123,14 @@ bool operator == (const Edge& m, const Edge&n) {
 		m.dest == n.dest &&
 		m.weight == n.weight;
 }
+void Graph::exportGraph(const std::string & name) {
+	std::ofstream of(name, std::ofstream::trunc);
+	of << "Source,Target,Type,Id,Weight\n";
+	int c = 1;
+	for (auto &i : neighbors) {
+		for (auto &k : i.second) {
+			of << k.source << "," << k.dest << ",Undirected," << c++ << "," << k.weight << "\n";
+		}
+	}
+	of.close();
+}
