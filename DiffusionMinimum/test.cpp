@@ -92,11 +92,16 @@ static void test_graph_johnson() {
 		}
 	}
 }
+static void test_basic() {
+	Graph g("eg3.txt");
+	auto m = g.johnson();
+}
 static void test_graph() {
 	test_graph_degree();
 	test_graph_weight();
 	test_graph_dijkstra();
 	test_graph_johnson();
+	test_basic();
 }
 
 int main(void) {
